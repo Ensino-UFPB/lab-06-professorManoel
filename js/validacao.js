@@ -54,6 +54,9 @@ const mensagensDeErro = {
     },
     estado: {
         valueMissing: 'O campo de estado não pode estar vazio.'
+    },
+    tel:{
+        valueMissing: 'O Compo de telefone esta vazio'
     }
 }
 
@@ -195,3 +198,35 @@ function preencheCamposComCEP(data) {
     cidade.value = data.localidade
     estado.value = data.uf
 }
+
+document.addEventListener("DOMContentLoaded", function() {
+    const telefoneInput = document.getElementById("tel");
+
+    telefoneInput.addEventListener("input", function(event) {
+        let numero = telefoneInput.value.replace(/\D/g, "");
+
+        if (numero.length > 10) {
+            telefoneInput.value = `(${numero.slice(0,2)}) ${numero.slice(2,7)}-${numero.slice(7,11)}`;
+        } else if (numero.length > 6) {
+            telefoneInput.value = `(${numero.slice(0,2)}) ${numero.slice(2,6)}-${numero.slice(6,10)}`;
+        } else if (numero.length > 2) {
+            telefoneInput.value = `(${numero.slice(0,2)}) ${numero.slice(2)}`;
+        } else if (numero.length > 0) {
+            telefoneInput.value = `(${numero}`;
+        }
+    });
+});
+
+document.addEventListener("DOMContentLoaded", function() {
+    const instagramInput = document.getElementById("instagram");
+
+    instagramInput.addEventListener("input", function(event) {
+        let valor = instagramInput.value;
+        if (!valor.startsWith("@")) {
+            instagramInput.value = "@" + valor.replace(/@/g, "");
+        }
+    });
+});
+
+
+

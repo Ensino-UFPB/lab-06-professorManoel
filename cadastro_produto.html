@@ -13,6 +13,7 @@
     <link rel="stylesheet" href="./assets/css/componentes/inputs.css">
     <link rel="stylesheet" href="./assets/css/componentes/botao.css">
     <link rel="stylesheet" href="./assets/css/cadastro_produto.css">
+    <script src="https://cdn.jsdelivr.net/npm/simple-mask-money@latest/lib/simple-mask-money.min.js"></script>
 </head>
 <body>
     <header class="cabecalho container">
@@ -29,14 +30,14 @@
     <main class="container flex flex--centro flex--coluna">
         <section class="cartao cadastro">
             <h1 class="cartao__titulo">Cadastrar um produto</h1>
-            <form action="./cadastro_produto_concluido.html" class="flex flex--coluna">
+            <form action="./cadastro_produto_concluido.html" class="flex flex--coluna" id="formCadastroProduto">
                 <div class="input-container">
-                    <input name="nome" id="nome" class="input" type="text" placeholder="Nome">
+                    <input name="nome" id="nome" class="input" type="text" placeholder="Nome" required>
                     <label class="input-label" for="nome">Nome</label>
                     <span class="input-mensagem-erro">Este campo não está válido</span>
                 </div>
                 <div class="input-container cadastro__preco-container">
-                    <input name="preco" id="preco" class="input" type="text" placeholder="Preço">
+                    <input name="preco" id="preco" class="input" type="text" placeholder="Preço" data-mask-money required>
                     <label class="input-label" for="preco">Preço</label>
                     <span class="input-mensagem-erro">Este campo não está válido</span>
                 </div>
@@ -45,9 +46,54 @@
                     <label class="input-label" for="descricao">Descrição</label>
                     <span class="input-mensagem-erro">Este campo não está válido</span>
                 </div>
+                <div class="input-container cadastro__quantidade-container">
+                    <input name="quantidade" id="quantidade" class="input" type="number" placeholder="Quantidade em estoque" required>
+                    <label class="input-label" for="quantidade">Quantidade em Estoque</label>
+                    <span class="input-mensagem-erro">Este campo não está válido</span>
+                </div>
                 <button class="botao">Cadastrar produto</button>
             </form>
         </section>
     </main>
+    <script>
+        document.addEventListener("DOMContentLoaded", function() {
+            const inputPreco = document.querySelector("[data-mask-money]");
+            SimpleMaskMoney.setMask(inputPreco, {
+                prefix: 'R$ ',
+                fixed: true,
+                fractionDigits: 2,
+                decimalSeparator: ',',
+                thousandsSeparator: '.',
+                cursor: 'end'
+            });
+
+            // Adicionando validação para o campo "Nome" e "Quantidade"
+            const form = document.getElementById("formCadastroProduto");
+            form.addEventListener("submit", function(event) {
+                let valid = true;
+                
+                const nome = document.getElementById("nome");
+                const quantidade = document.getElementById("quantidade");
+
+                if (!nome.value.trim()) {
+                    valid = false;
+                    nome.nextElementSibling.style.display = 'block';
+                } else {
+                    nome.nextElementSibling.style.display = 'none';
+                }
+
+                if (!quantidade.value.trim()) {
+                    valid = false;
+                    quantidade.nextElementSibling.style.display = 'block';
+                } else {
+                    quantidade.nextElementSibling.style.display = 'none';
+                }
+
+                if (!valid) {
+                    event.preventDefault();
+                }
+            });
+        });
+    </script>
 </body>
 </html>
